@@ -1,0 +1,26 @@
+{
+  "name": "jacobsantos/rxsavingsolutioncodechallenge",
+  "description": "Rx Saving Solution Code Challenge",
+  "require": {
+    "php": ">=7.0",
+    "lstrojny/functional-php": "~1.5.0"
+  },
+  "require-dev": {
+    "fzaninotto/faker": "~1.4",
+    "codeception/codeception": "~2.2"
+  },
+  "autoload": {
+    "psr-4": {
+      "JacobSantos\\": "lib/"
+    },
+    "files": [
+      "src/helpers.php"
+    ]
+  },
+  "autoload-dev": {
+    "classmap": [
+      "tests/"
+    ]
+  },
+  "prefer-stable": true
+}

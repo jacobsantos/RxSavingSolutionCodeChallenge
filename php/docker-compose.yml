@@ -1,0 +1,32 @@
+version: '2'
+services:
+  data:
+    image: busybox
+    volumes:
+      - ./src:/var/www/html
+    command: "sh"
+
+  web:
+    image: php:7.0-apache
+    depends_on:
+      - data
+      - database
+    volumes_from:
+      - data
+    ports:
+      - "8181:80"
+    environment:
+      PDO_DSN: "mysql:host=database;database=solution"
+      PDO_USERNAME: solution
+      PDO_PASSWORD: secret
+
+  database:
+    image: mariadb
+    ports:
+      - "3307:3306"
+    volumes:
+      - ./images/addresses.sql:/docker-entrypoint-initdb.d/addresses.sql:ro
+    environment:
+      MYSQL_DATABASE: solution
+      MYSQL_USER: solution
+      MYSQL_PASSWORD: secret
