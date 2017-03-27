@@ -14,7 +14,7 @@
       "JacobSantos\\": "lib/"
     },
     "files": [
-      "src/helpers.php"
+      "helpers.php"
     ]
   },
   "autoload-dev": {

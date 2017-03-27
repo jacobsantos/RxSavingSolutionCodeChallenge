@@ -7,7 +7,7 @@ services:
     command: "sh"
 
   web:
-    image: php:7.0-apache
+    build: .
     depends_on:
       - data
       - database
@@ -15,8 +15,10 @@ services:
       - data
     ports:
       - "8181:80"
+    links:
+      - database
     environment:
-      PDO_DSN: "mysql:host=database;database=solution"
+      PDO_DSN: "mysql:host=database;dbname=solution"
       PDO_USERNAME: solution
       PDO_PASSWORD: secret
 
@@ -25,8 +27,9 @@ services:
     ports:
       - "3307:3306"
     volumes:
-      - ./images/addresses.sql:/docker-entrypoint-initdb.d/addresses.sql:ro
+      - ./image/addresses.sql:/docker-entrypoint-initdb.d/addresses.sql:ro
     environment:
+      MYSQL_ROOT_PASSWORD: secret
       MYSQL_DATABASE: solution
       MYSQL_USER: solution
       MYSQL_PASSWORD: secret

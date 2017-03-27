@@ -31,5 +31,5 @@ function errorJSON(int $statusCode, string $message)
  */
 function validateCoordinate(string $value): bool
 {
-    return preg_match('#[-]?[0-9]{1,3}[.][0-9]+#', $value) === 1;
+    return preg_match('#[-]?[0-9]{1,3}(?:[.][0-9]+)?#', $value) === 1;
 }

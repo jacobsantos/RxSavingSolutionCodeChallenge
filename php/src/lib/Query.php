@@ -37,13 +37,17 @@ class Query
      *   Longitude for closest lookup.
      * @return array
      */
-    public function lookup(string $latitude, string $longitude): array
+    public function lookup(string $latitude, string $longitude)
     {
         // We approximate the distance using 2D distance formula. This is wrong. The better formula is costly, so we
         // aren't going to use it. The good news it that we will use this cheap-ish formula to get results that should
         // be in the area of closest.
-        $query = $this->pdo()->query(sprintf('SELECT *, SQRT(SUM(POW((%.8d - `latitude`), 2), POW((%.8d - `longitude`), 2))) AS `distance` FROM `addresses`, 0 AS `miles` ORDER BY `distance` ASC LIMIT 3', $latitude, $longitude));
-        $rows = $query->fetchAll(\PDO::FETCH_OBJ);
+        try {
+            $query = $this->pdo()->query(sprintf('SELECT *, SQRT(POW((%0.8d - latitude), 2) + POW((%0.8d - longitude), 2)) AS `distance`, 0 AS `miles` FROM `addresses` ORDER BY `distance` ASC LIMIT 3', $latitude, $longitude));
+            $rows = $query->fetchAll(\PDO::FETCH_OBJ);
+        } catch (\PDOException $e) {
+            return errorJSON(500, $e->getMessage());
+        }
 
         // After we get the closest, we need to get the actual (approximate) distance in miles and add it to the object
         // Then get the closest from the available and return it. The answer will logically be the first item, but we

@@ -1,5 +1,7 @@
 <?php
 
+require __DIR__ . '/vendor/autoload.php';
+
 // Only allow POST HTTP methods. This could be extended to include GET, or PUT and PATCH.
 if (!in_array(strtolower($_SERVER['REQUEST_METHOD']), ['post'])) {
     \JacobSantos\errorJSON(406, 'Allowed HTTP methods: POST');
